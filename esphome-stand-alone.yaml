@@ -1,0 +1,191 @@
+substitutions:
+  devicename: esp32_ttgo_t5
+
+esphome:
+  name: lilygo-epaper-esp32
+  friendly_name: liligo-ePaper ESP32
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: True
+  id: bus_a
+
+font:
+
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: roboto_med_30
+    size: 30
+  - file: 'fonts/Roboto-Regular.ttf'
+    id: footer_font
+    size: 12
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+
+  - file: 'fonts/Roboto-Regular.ttf'
+    id: main_sensor_unit
+    size: 20
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+       
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: sub_sensor_font
+    size: 25
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+  
+  - file: 'fonts/Roboto-Bold.ttf'
+    id: main_sensor_font
+    size: 55
+  
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_small
+    size: 31
+    glyphs: [
+#      # Wifi
+#      '󰤫', # mdi-wifi-strength-alert-outline
+#      '󰤟', # mdi-wifi-strength-1
+#      '󰤢', # mdi-wifi-strength-2
+#      '󰤥', # mdi-wifi-strength-3
+#      '󰤨', # mdi-wifi-strength-4
+      '󰔏', # mdi-themometer
+      '󰖎', # mdi-water-percent
+#      '󰃞', # mdi-sun
+#      '󰹦', # mdi-plant
+#      '󱒁' # mdi-water-can
+      ]
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_wifi
+    size: 20
+#    glyphs: [
+#      # Wifi
+#      '󰤫', # mdi-wifi-strength-alert-outline
+#      '󰤟', # mdi-wifi-strength-1
+#      '󰤢', # mdi-wifi-strength-2
+#      '󰤥', # mdi-wifi-strength-3
+#      '󰤨'  # mdi-wifi-strength-4
+#
+#      ]
+#
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_med
+    size: 33
+    glyphs: [
+#      # Wifi
+#      '󰤫', # mdi-wifi-strength-alert-outline
+#      '󰤟', # mdi-wifi-strength-1
+#      '󰤢', # mdi-wifi-strength-2
+#      '󰤥', # mdi-wifi-strength-3
+#      '󰤨', # mdi-wifi-strength-4
+      '󰀦' # mdi-alert
+      ]
+
+
+sensor:
+  - platform: scd4x
+    measurement_mode: single_shot
+    temperature_offset: 0
+    co2:
+      name: "Anmu room CO2"
+      id: air_quality
+    temperature:
+      name: "Anmu room temp"
+      id: temp_indoor
+    humidity:
+      name: "Anmu room humidity"
+      id: humid_indoor
+    address: 0x62
+    i2c_id: bus_a  # Ensure this matches the id of your i2c bus
+    update_interval: 15s
+
+display:
+  - platform: waveshare_epaper
+    cs_pin: GPIO5
+    dc_pin: GPIO17
+    busy_pin: GPIO4
+    reset_pin: GPIO16
+    model: 2.13in-ttgo-dke # choose your display size here
+    rotation: 90
+    full_update_every: 10 # every 12th time
+    update_interval: 25s
+    id: epaperdisplay
+    lambda: |-
+      
+      int offsetY = 137;
+      
+      int air_quality_danger_thresh = 800;
+      int quality_air = int(id(air_quality).state);
+      float indoor_temp = id(temp_indoor).state;
+      int indoor_humid = int(id(humid_indoor).state);
+       
+
+      /* ROOM */
+      it.print(0, 10, id(main_sensor_unit), "Felix = Filja");
+      it.filled_rectangle(105, 21, 250, 3);
+      it.print(0, 105, id(main_sensor_unit), TextAlign::BASELINE_LEFT, "Co2");
+      it.print(240, 56,  id(mdi_small), TextAlign::BASELINE_CENTER, "󰔏"); //thermometer
+      it.print(240, 91, id(mdi_small), TextAlign::BASELINE_CENTER, "󰖎"); //water-percent
+
+      if(indoor_temp > -100 && indoor_temp < 100){
+        it.printf(230, 56, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%2.1fºc", indoor_temp);
+      }else{
+        it.print(230, 56, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " - ºc");
+      }
+
+      if(indoor_humid >=0 && indoor_humid <= 100){
+        it.printf(230, 91, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%3d%%", indoor_humid);
+      }else{
+        it.print(230, 91, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " -  %");
+      }
+      
+      if(quality_air < 6000 && quality_air >=0){
+        if (quality_air > 100){
+          it.printf(165, 115, id(main_sensor_font), TextAlign::BASELINE_RIGHT , "%3d", quality_air);
+          it.print(165, 115, id(main_sensor_unit),TextAlign::BASELINE_LEFT, "ppm");
+        }else{
+          it.printf(165, 115, id(main_sensor_font), TextAlign::BASELINE_RIGHT , "%2d", quality_air);
+          it.print(165, 115, id(main_sensor_unit), TextAlign::BASELINE_LEFT, "ppm");
+        }
+
+        if(quality_air >= air_quality_danger_thresh){
+          it.print(17, 75, id(mdi_med), TextAlign::BASELINE_CENTER, "󰀦"); //warning
+        }
+
+      }
+      else{
+        it.print(165, 115 + offsetY, id(main_sensor_font), TextAlign::BASELINE_RIGHT , "- ");
+        it.print(165, 115 + offsetY, id(main_sensor_unit),TextAlign::BASELINE_LEFT, "ppm");
+      } 
+
+deep_sleep:
+  run_duration: 35s
+  sleep_duration: 5min
+  id: deep_sleep_1
