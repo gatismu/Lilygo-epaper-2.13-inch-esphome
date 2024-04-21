@@ -7,11 +7,11 @@ esphome:
   on_boot:
     priority: -10
     then:
-       - delay: 10s
+       - delay: 8s
        - component.update: my_scd4x
        - delay: 10s
        - component.update: epaperdisplay
-       - delay: 2s
+       - delay: 5s
        - deep_sleep.enter: deep_sleep_1  
 
 esp32:
