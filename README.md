@@ -9,3 +9,5 @@ with wifi, integrated into HA with - WaveShare 2.13inch E-Paper Cloud Module, 25
 (https://eckstein-shop.de/index.php?a=20007&bewertung_anzeigen=1#tab-votes)
 
 !! Inspired from this project, Thanks!! https://github.com/DeastinY/esphome-waveshare-e-paper-dashboard
+
+![co2sensors](https://github.com/gatismu/Liligo-epaper-2.13-inch-esphome/assets/125309219/ffa7ae48-b4e3-48a8-9abc-e397489c744b)
