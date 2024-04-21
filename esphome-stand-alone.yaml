@@ -124,7 +124,7 @@ sensor:
       id: humid_indoor
     address: 0x62
     i2c_id: bus_a  # Ensure this matches the id of your i2c bus
-    update_interval: 15s
+    update_interval: 12s
 
 display:
   - platform: waveshare_epaper
@@ -135,7 +135,7 @@ display:
     model: 2.13in-ttgo-dke # choose your display size here
     rotation: 90
     full_update_every: 10 # every 12th time
-    update_interval: 25s
+    update_interval: 26s
     id: epaperdisplay
     lambda: |-
       
@@ -186,6 +186,6 @@ display:
       } 
 
 deep_sleep:
-  run_duration: 35s
+  run_duration: 36s
   sleep_duration: 5min
   id: deep_sleep_1
