@@ -1,0 +1,266 @@
+substitutions:
+  devicename: "waveshare"
+
+esphome:
+  name: epaper-esp32
+  friendly_name: ePaper ESP32
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "xxx"
+
+wifi:
+  ssid: xxx
+  password: xxx
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Epaper-Esp32 Fallback Hotspot"
+    password: "xxx49jLl"
+
+captive_portal:
+
+spi:
+  clk_pin: GPIO13
+  mosi_pin: GPIO14
+
+i2c:
+  sda: GPIO23
+  scl: GPIO22
+  scan: True
+  id: bus_a
+
+font:
+
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: roboto_med_30
+    size: 30
+  - file: 'fonts/Roboto-Regular.ttf'
+    id: footer_font
+    size: 10
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+
+  - file: 'fonts/Roboto-Regular.ttf'
+    id: main_sensor_unit
+    size: 20
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+       
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: sub_sensor_font
+    size: 25
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+  
+  - file: 'fonts/Roboto-Bold.ttf'
+    id: main_sensor_font
+    size: 55
+  
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_small
+    size: 31
+    glyphs: [
+      # Wifi
+      '󰤫', # mdi-wifi-strength-alert-outline
+      '󰤟', # mdi-wifi-strength-1
+      '󰤢', # mdi-wifi-strength-2
+      '󰤥', # mdi-wifi-strength-3
+      '󰤨', # mdi-wifi-strength-4
+      '󰔏', # mdi-themometer
+      '󰖎', # mdi-water-percent
+      '󰃞', # mdi-sun
+      '󰹦', # mdi-plant
+      '󱒁' # mdi-water-can
+      ]
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_wifi
+    size: 20
+    glyphs: [
+      # Wifi
+      '󰤫', # mdi-wifi-strength-alert-outline
+      '󰤟', # mdi-wifi-strength-1
+      '󰤢', # mdi-wifi-strength-2
+      '󰤥', # mdi-wifi-strength-3
+      '󰤨'  # mdi-wifi-strength-4
+
+      ]
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_med
+    size: 33
+    glyphs: [
+      # Wifi
+      '󰤫', # mdi-wifi-strength-alert-outline
+      '󰤟', # mdi-wifi-strength-1
+      '󰤢', # mdi-wifi-strength-2
+      '󰤥', # mdi-wifi-strength-3
+      '󰤨', # mdi-wifi-strength-4
+      '󰀦' # mdi-alert
+      ]
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+sensor:
+  - platform: adc
+    pin: GPIO36
+    name: "${devicename} Battery voltage"
+    id: battery_voltage
+    icon: mdi:battery
+    device_class: voltage
+    attenuation: auto # without attenuation the adc is saturated (VBat/3 > 1.1 V)
+    filters:
+     - multiply: 3
+    update_interval: 300s
+
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    id: wifisignal
+    update_interval: 300s
+
+  - platform: scd4x
+    co2:
+      name: "Ika room CO2"
+      id: air_quality
+    temperature:
+      name: "Ika room temp"
+      id: temp_indoor
+#      oversampling: 16x
+    humidity:
+      name: "Ika room humidity"
+      id: humid_indoor
+    address: 0x62
+    update_interval: 60s
+    i2c_id: bus_a  # Ensure this matches the id of your i2c bus
+
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO12
+      inverted: true # user button pull IO12 to GND
+      mode:          # pin as input and enable pull up
+        input: true
+        pullup: true
+    name: "${devicename} button"
+    filters:
+      - delayed_on: 50ms
+    on_press:
+      - logger.log: "Button pressed"
+
+display:
+  - platform: waveshare_epaper
+    cs_pin: GPIO15
+    dc_pin: GPIO27
+    busy_pin: GPIO25
+    reset_pin: GPIO26
+    model: 2.13in-ttgo-dke # choose your display size here
+    rotation: 90
+    full_update_every: 12 # every 12th time
+    update_interval: 180s
+    id: epaperdisplay
+    lambda: |-
+      
+      int offsetY = 137;
+      
+      int air_quality_danger_thresh = 800;
+      int quality_air = int(id(air_quality).state);
+      float indoor_temp = id(temp_indoor).state;
+      int indoor_humid = int(id(humid_indoor).state);
+       
+
+      /* ROOM */
+      it.print(0, 10, id(main_sensor_unit), "Minebl0xss");
+      it.filled_rectangle(105, 21, 250, 3);
+      it.print(0, 105, id(main_sensor_unit), TextAlign::BASELINE_LEFT, "Co2");
+      it.print(240, 56,  id(mdi_small), TextAlign::BASELINE_CENTER, "󰔏"); //thermometer
+      it.print(240, 91, id(mdi_small), TextAlign::BASELINE_CENTER, "󰖎"); //water-percent
+
+      if(indoor_temp > -100 && indoor_temp < 100){
+        it.printf(230, 56, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%2.1fºc", indoor_temp);
+      }else{
+        it.print(230, 56, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " - ºc");
+      }
+
+      if(indoor_humid >=0 && indoor_humid <= 100){
+        it.printf(230, 91, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%3d%%", indoor_humid);
+      }else{
+        it.print(230, 91, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " -  %");
+      }
+      
+      if(quality_air < 6000 && quality_air >=0){
+        if (quality_air > 100){
+          it.printf(165, 110, id(main_sensor_font), TextAlign::BASELINE_RIGHT , "%3d", quality_air);
+          it.print(165, 110, id(main_sensor_unit),TextAlign::BASELINE_LEFT, "ppm");
+        }else{
+          it.printf(165, 110, id(main_sensor_font), TextAlign::BASELINE_RIGHT , "%2d", quality_air);
+          it.print(165, 110, id(main_sensor_unit), TextAlign::BASELINE_LEFT, "ppm");
+        }
+
+        if(quality_air >= air_quality_danger_thresh){
+          it.print(17, 75, id(mdi_med), TextAlign::BASELINE_CENTER, "󰀦"); //warning
+        }
+
+      }
+      else{
+        it.print(165, 110 + offsetY, id(main_sensor_font), TextAlign::BASELINE_RIGHT , "- ");
+        it.print(165, 110 + offsetY, id(main_sensor_unit),TextAlign::BASELINE_LEFT, "ppm");
+      } 
+
+      /* FOOTERT */
+      it.strftime(225, 122 , id(footer_font), TextAlign::BASELINE_RIGHT , "Updated at %d/%b/%Y %H:%M", id(homeassistant_time).now());
+      
+      /* WiFi Signal Strenght */
+      if(id(wifisignal).has_state()) {
+        int x = 240;
+        int y = 122;
+        if (id(wifisignal).state >= -50) {
+            //Excellent
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤨");
+            ESP_LOGI("WiFi", "Exellent");
+        } else if (id(wifisignal).state  >= -60) {
+            //Good
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤥");
+            ESP_LOGI("WiFi", "Good");
+        } else if (id(wifisignal).state  >= -75) {
+            //Fair
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤢");
+            ESP_LOGI("WiFi", "Fair");
+        } else if (id(wifisignal).state  >= -100) {
+            //Weak
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤟");
+            ESP_LOGI("WiFi", "Weak");
+        } else {
+            //Unlikely working signal
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤫");
+            ESP_LOGI("WiFi", "Unlikely");
+        }
+      }
