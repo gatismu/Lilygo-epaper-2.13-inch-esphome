@@ -196,6 +196,6 @@ display:
       } 
 
 deep_sleep:
-  run_duration: 36s
+  run_duration: 22s
   sleep_duration: 5min
   id: deep_sleep_1
