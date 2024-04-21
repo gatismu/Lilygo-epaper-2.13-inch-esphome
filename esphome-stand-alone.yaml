@@ -4,6 +4,15 @@ substitutions:
 esphome:
   name: lilygo-epaper-esp32
   friendly_name: liligo-ePaper ESP32
+  on_boot:
+    priority: -10
+    then:
+       - delay: 10s
+       - component.update: my_scd4x
+       - delay: 10s
+       - component.update: epaperdisplay
+       - delay: 2s
+       - deep_sleep.enter: deep_sleep_1  
 
 esp32:
   board: esp32dev
